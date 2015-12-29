@@ -122,7 +122,20 @@ public abstract class Graph {
 	 */
 	public List<Integer> degreeSequence() {
 		// XXX: Implement in part 1 of week 1
-		return null;
+		
+		List<Integer> degreeList = new ArrayList<Integer>();
+		
+		for(int i=0;i<getNumVertices();i++)
+		{
+			int sum = getNeighbors(i).size() + getInNeighbors(i).size();
+			degreeList.add(sum);
+		}
+		
+		Collections.sort(degreeList);
+		Collections.reverse(degreeList);
+		
+		
+		return degreeList;
 	}
 	
 	/**
