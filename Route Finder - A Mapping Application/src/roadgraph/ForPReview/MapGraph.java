@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -253,76 +252,8 @@ public class MapGraph {
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
 		
-		MapNode startNode  = nodes.get(start);
-		MapNode endNode = nodes.get(goal);
-		boolean found = false;
-		
-		HashSet<MapNode> visited = new HashSet<MapNode>();
-		PriorityQueue<MapNode> pQueue = new PriorityQueue<MapNode>();
-		HashMap<MapNode,MapNode> parentMap = new HashMap<MapNode,MapNode>();
-		
-		for(GeographicPoint gp : nodes.keySet())
-			nodes.get(gp).setDistance(Double.MAX_VALUE);
-		
-		startNode.setDistance(0);
-		pQueue.add(startNode);
-		int count = 0;
-		
-		while(!pQueue.isEmpty())
-		{
-			MapNode curr = pQueue.remove();
-			count ++ ;
-			if(!visited.contains(curr))
-			{
-				visited.add(curr);
-				if(curr == endNode)
-				{
-					found = true;
-					break;				
-				}
-				
-				List<MapEdge> neighbors = curr.getEdges();
-				ListIterator<MapEdge> it = neighbors.listIterator(neighbors.size());
-				
-				while(it.hasPrevious())
-				{
-					MapEdge edge = it.previous();
-					MapNode node = nodes.get(edge.getEnd());
-					if(!visited.contains(node))
-					{
-						double sum = curr.getDistance() + edge.getLength();
-						if(sum < node.getDistance())
-						{
-							node.setDistance(sum);
-							parentMap.put(node, curr);
-							pQueue.add(node);
-						}
-						
-					}
-				}
-				
-			}	
-		}
-		if (!found) {
-			System.out.println("No path exists");
-			return null;
-		}
-		
-		LinkedList<GeographicPoint> path = new LinkedList<GeographicPoint>();
-		
-		MapNode curr = endNode;
-		while(curr != startNode)
-		{
-			path.addFirst(curr.getLocation());
-			curr = parentMap.get(curr);
-		}
-		path.addFirst(startNode.getLocation());
-		
-		System.out.println(count);
-		return path;
+		return null;
 	}
-	
-	
 
 	/** Find the path from start to goal using A-Star search
 	 * 
@@ -353,105 +284,34 @@ public class MapGraph {
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
 		
-		MapNode startNode  = nodes.get(start);
-		MapNode endNode = nodes.get(goal);
-		boolean found = false;
-		
-		HashSet<MapNode> visited = new HashSet<MapNode>();
-		PriorityQueue<MapNode> pQueue = new PriorityQueue<MapNode>();
-		HashMap<MapNode,MapNode> parentMap = new HashMap<MapNode,MapNode>();
-		
-		for(GeographicPoint gp : nodes.keySet())
-		{
-			nodes.get(gp).setDistance(Double.MAX_VALUE);
-			nodes.get(gp).setSlineDistance(Double.MAX_VALUE);
-		}
-		startNode.setDistance(0);
-		startNode.setSlineDistance(0);
-		pQueue.add(startNode);
-		int count =0;
-		while(!pQueue.isEmpty())
-		{
-			MapNode curr = pQueue.remove();
-			count ++ ;
-			
-			if(!visited.contains(curr))
-			{
-				visited.add(curr);
-				if(curr == endNode)
-				{
-					found = true;
-					break;				
-				}
-				
-				List<MapEdge> neighbors = curr.getEdges();
-				ListIterator<MapEdge> it = neighbors.listIterator(neighbors.size());
-				
-				while(it.hasPrevious())
-				{
-					MapEdge edge = it.previous();
-					MapNode node = nodes.get(edge.getEnd());
-					
-					double sLineDistance = (node.getLocation()).distance(goal);
-					node.setSlineDistance(sLineDistance);
-					
-					if(!visited.contains(node))
-					{
-						double sum = curr.getDistance() + edge.getLength() ;
-						
-						if(sum < node.getDistance())
-						{
-							node.setDistance(sum);
-							parentMap.put(node, curr);
-							pQueue.add(node);
-						}
-						
-					}
-				}
-				
-			}	
-		}
-		if (!found) {
-			System.out.println("No path exists");
-			return null;
-		}
-		
-		LinkedList<GeographicPoint> path = new LinkedList<GeographicPoint>();
-		
-		MapNode curr = endNode;
-		while(curr != startNode)
-		{
-			path.addFirst(curr.getLocation());
-			curr = parentMap.get(curr);
-		}
-		path.addFirst(startNode.getLocation());
-		
-		System.out.println(count);
-		
-		return path;
-	
+		return null;
 	}
 
 	
 	
 	public static void main(String[] args)
 	{
-		/*System.out.print("Making a new map...");
+		System.out.print("Making a new map...");
 		MapGraph theMap = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
-		System.out.println("DONE.");*/
+		System.out.println("DONE.");
 		
+		// You can use this method for testing.  
+		
+		/* Use this code in Week 3 End of Week Quiz
 		MapGraph theMap = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/maps/utc.map", theMap);
 		System.out.println("DONE.");
 
-		GeographicPoint start = new GeographicPoint(32.8648772, -117.2254046);
-		GeographicPoint end = new GeographicPoint(32.8660691, -117.217393);
-
+		GeographicPoint start = new GeographicPoint(32.868629, -117.215393);
+		GeographicPoint end = new GeographicPoint(32.868629, -117.215393);
+		
 		List<GeographicPoint> route = theMap.dijkstra(start,end);
 		List<GeographicPoint> route2 = theMap.aStarSearch(start,end);
+
+		*/
 		
 	}
 	
